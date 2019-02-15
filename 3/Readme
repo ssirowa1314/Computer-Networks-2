@@ -1,0 +1,10 @@
+Instructions to run:
+
+
+g++ -o s -std=c++11 -pthread s.cpp
+
+g++ -o c -std=c++11 -pthread c.cpp
+
+./s
+
+./c

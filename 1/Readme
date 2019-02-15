@@ -1,0 +1,8 @@
+Instructions to run:
+g++ -o server server.cpp
+g++ -o client client.cpp
+
+open to separate terminal windows:
+execute in first window: ./server
+
+execute in second window: ./client

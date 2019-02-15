@@ -1,0 +1,15 @@
+1) Stop And Wait.pdf contains the report
+
+2) how to run
+g++ -o s Sender.cpp
+g++ -o c Reciever.cpp
+
+3) Open two terminals
+type the name of executable and give the name of required file name as command line parameter. 
+for sender give the name of file to sent as command line parameter
+for Reciever give the name of file in which you want to recieve. 
+
+4) In first terminal type: ./c recv.pdf
+   In second terminal type: ./s file.pdf
+
+   Make sure you execute the reciever first, to get accurate transfer times.

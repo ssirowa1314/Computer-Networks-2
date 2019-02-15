@@ -1,0 +1,71 @@
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#define PORT 3541
+using namespace std;
+
+int main(){
+	int sockid, status, flag=0;
+	struct sockaddr_in addrport;
+	memset(&addrport, '0', sizeof(addrport)); 
+	char buff[1024];
+	memset(buff, '0',sizeof(buff));	
+
+	sockid = socket(AF_INET, SOCK_STREAM, 0);
+	if(sockid<0){
+		printf("Client Error: Socket Creation Failed\n");
+		return 0;
+	}
+	addrport.sin_family = AF_INET;
+	addrport.sin_port = htons(PORT);
+
+	status = inet_pton(AF_INET, "127.0.0.1", &addrport.sin_addr.s_addr);
+	if(status<0)
+	{
+		printf("Client Error: IP not initialized succesfully");
+		return 0;
+	}
+
+	status=connect(sockid, (struct sockaddr *) &addrport,sizeof(addrport));
+	if (status < 0){
+		printf("Client Error: Connection Failed");
+		return 0;
+	}
+	printf("Send exit to Server to close program\n\n");
+	while(1){
+    	bzero(buff,256);
+    	printf("Write Something to Send to Server: ");
+    	fgets(buff,255,stdin);
+
+    	status = send(sockid,buff,strlen(buff),0);
+		if (status < 0){
+			printf("\nClient Error: Writing to Server");
+		   	return 0;
+		}
+		    
+		if(buff[0]=='e' && buff[1]=='x' && buff[2]=='i' && buff[3]=='t'){
+			flag=1;
+		}
+		/* Now read server response */
+	    bzero(buff,256);
+	    status = recv(sockid,buff,255,0);
+	    if (status < 0){
+			printf("Client Error: Reading from Server");
+			return 0;
+	    }
+	    printf("Message From Server: %s\n\n",buff);
+
+	    if(flag)
+	    	break;
+	}
+	close(status);
+	close(sockid);
+	printf("Program Closed Successfully\n");
+	return 0;
+}
+
